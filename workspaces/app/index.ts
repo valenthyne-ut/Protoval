@@ -1,11 +1,11 @@
 import "dotenv/config";
 import { setupClient } from "./client";
 import { Client } from "discord.js";
+import config from "./shared/config";
 
 void (async () => {
-	const token = process.env.CLIENT_TOKEN;
-	if(!token) { throw new Error("Client token was not supplied."); }
+	const token = config.CLIENT_TOKEN;
 
-	const successful = (await setupClient(token)) instanceof Client;
-	if(!successful) { process.exit(1); }
+	const client = await setupClient({ intents: config.CLIENT_INTENTS }, token);
+	if(!(client instanceof Client)) { process.exit(1); }
 })();

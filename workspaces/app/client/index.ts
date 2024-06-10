@@ -1,27 +1,19 @@
-import { Client } from "discord.js";
+import { Client, ClientOptions } from "discord.js";
 import { logger } from "../shared/classes/Logger";
 import { unrollError } from "../shared/utility/Errors";
 
-/**
- * 
- * @param token 
- * @returns Client
- */
-export async function setupClient(token: string): Promise<Client | false> {
+export async function setupClient(config: ClientOptions, token: string): Promise<Client | false> {
 	try {
-		const client = new Client({ intents: [
-			"Guilds"
-		]});
+		const client = new Client(config);
 	
 		client.on("ready", () => {
 			logger.info("Client ready.");
 		});
 
 		await client.login(token);
-
 		return client;
 	} catch(error) {
-		logger.fatal(unrollError(error, true));
+		logger.error(unrollError(error, true));
 		return false;
 	}
 }
