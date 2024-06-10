@@ -1,4 +1,17 @@
 {
-  "name": "protoval",
-  "packageManager": "yarn@4.2.2"
+	"name": "protoval",
+	"packageManager": "yarn@4.2.2",
+	"workspaces": [
+		"workspaces/app",
+		"workspaces/dashboard"
+	],
+	"devDependencies": {
+		"@eslint/js": "^9.4.0",
+		"eslint": "9.x",
+		"eslint-plugin-vue": "^9.26.0",
+		"execa": "^9.2.0",
+		"globals": "^15.4.0",
+		"typescript": "^5.4.5",
+		"typescript-eslint": "^7.12.0"
+	}
 }
