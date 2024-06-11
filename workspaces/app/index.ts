@@ -10,6 +10,6 @@ void (async () => {
 	const client = await setupClient({ intents: config.CLIENT_INTENTS }, token);
 	if(!(client instanceof Client)) { process.exit(1); }
 
-	const server = setupServer();
+	const server = await setupServer();
 	if(!server) { process.exit(1); }
 })();

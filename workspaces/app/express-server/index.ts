@@ -1,16 +1,19 @@
-import express, { Express } from "express";
+import { cyan } from "chalk";
+import cookieParser from "cookie-parser";
 import cors from "cors";
-import { unrollError } from "../shared/utility/Errors";
+import express, { Express } from "express";
+import helmet from "helmet";
+import { createServer } from "https";
 import { logger } from "../shared/classes/Logger";
 import config from "../shared/config";
-import { setupViewEngine } from "./config/viewEngine";
-import { createServer } from "https";
-import { cyan } from "chalk";
-import helmet from "helmet";
+import { unrollError } from "../shared/utility/Errors";
 import { apiRouter } from "./api";
+import { setupViewEngine } from "./config/viewEngine";
+import { prepareDatabase } from "./database";
 
-export function setupServer(): Express | false {
+export async function setupServer(): Promise<Express | false> {
 	try {
+		await prepareDatabase();
 		const app = express();
 		
 		app.use(cors({
@@ -19,6 +22,7 @@ export function setupServer(): Express | false {
 
 		app.use(helmet());
 		app.use(express.json());
+		app.use(cookieParser());
 		app.use("/api", apiRouter);
 
 		setupViewEngine(app);

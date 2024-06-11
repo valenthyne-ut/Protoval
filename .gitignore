@@ -17,3 +17,5 @@ node_modules
 **/.env
 **/ssl-credentials
 *.pem
+protoval.sqlite
+*.sqlite
