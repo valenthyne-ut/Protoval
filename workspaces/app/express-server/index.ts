@@ -7,6 +7,7 @@ import { setupViewEngine } from "./config/viewEngine";
 import { createServer } from "https";
 import { cyan } from "chalk";
 import helmet from "helmet";
+import { apiRouter } from "./api";
 
 export function setupServer(): Express | false {
 	try {
@@ -18,6 +19,8 @@ export function setupServer(): Express | false {
 
 		app.use(helmet());
 		app.use(express.json());
+		app.use("/api", apiRouter);
+
 		setupViewEngine(app);
 
 		const httpsServer = createServer(config.SERVER_SSL_CREDENTIALS, app).listen(config.SERVER_PORT);

@@ -47,6 +47,17 @@ function getClientIntents(): Array<GatewayIntentsString> {
 	}
 }
 
+function getClientId(): string {
+	const clientId = process.env.CLIENT_ID;
+	if(clientId) { return clientId; }
+	else { die("Client ID was not provided."); }
+}
+
+function getClientSecret(): string {
+	const clientSecret = process.env.CLIENT_SECRET;
+	if(clientSecret) { return clientSecret; }
+	else { die("Client secret was not provided."); }
+}
 //#endregion
 
 // #region Server getters
@@ -81,6 +92,8 @@ function getServerCredentials(): ServerOptions {
 export default {
 	CLIENT_TOKEN: getClientToken(),
 	CLIENT_INTENTS: getClientIntents(),
+	CLIENT_ID: getClientId(),
+	CLIENT_SECRET: getClientSecret(),
 	SERVER_PORT: getServerPort(),
 	SERVER_SSL_CREDENTIALS: getServerCredentials()
 };
