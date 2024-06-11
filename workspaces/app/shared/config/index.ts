@@ -7,6 +7,10 @@
 import { GatewayIntentBits, GatewayIntentsString } from "discord.js";
 import { logger } from "../classes/Logger";
 import { yellow } from "chalk";
+import { ServerOptions } from "https";
+import { unrollError } from "../utility/Errors";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 function die(reason: string): never {
 	logger.fatal(reason);
@@ -45,7 +49,38 @@ function getClientIntents(): Array<GatewayIntentsString> {
 
 //#endregion
 
+// #region Server getters
+function getServerPort(): number {
+	let serverPort = 8443;
+	if(process.env.SERVER_PORT !== undefined) {
+		const parsedServerPort = parseInt(process.env.SERVER_PORT);
+		serverPort = parsedServerPort ? parsedServerPort : serverPort;
+	}
+	return serverPort;
+}
+
+function getServerCredentials(): ServerOptions {
+	const credentials: ServerOptions = {};
+	const cwd = process.cwd();
+
+	try {
+		const credentialsPath = join(cwd, "/ssl-credentials");
+		const keyPath = join(credentialsPath, "/key.pem");
+		const certPath = join(credentialsPath, "/cert.pem");
+
+		credentials.key = readFileSync(keyPath, { encoding: "utf-8" });
+		credentials.cert = readFileSync(certPath, { encoding: "utf-8" });
+	} catch(error) {
+		die(`Couldn't load SSL credentials.\n${unrollError(error, true)}`);
+	}
+
+	return credentials;
+}
+// #endregion
+
 export default {
 	CLIENT_TOKEN: getClientToken(),
 	CLIENT_INTENTS: getClientIntents(),
+	SERVER_PORT: getServerPort(),
+	SERVER_SSL_CREDENTIALS: getServerCredentials()
 };
