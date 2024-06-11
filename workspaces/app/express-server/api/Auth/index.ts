@@ -1,7 +1,8 @@
-import { OAuth2Routes } from "discord.js";
+import { OAuth2Routes, OAuth2Scopes } from "discord.js";
 import { Request, RequestHandler, Router } from "express";
 import config from "../../../shared/config";
 import { URLSearchParams } from "url";
+import { randomBytes } from "crypto";
 
 interface OAuthAuthenticationRequestParams { 
 	code: string | undefined;
@@ -11,7 +12,7 @@ type OAuthAuthenticationRequest = Request<unknown, unknown, unknown, OAuthAuthen
 type OAuthAuthenticationRequestHandler = RequestHandler<unknown, unknown, unknown, OAuthAuthenticationRequestParams>;
 
 export const authRouter = Router()
-	.get("/discord/oauth", (async (request: OAuthAuthenticationRequest, response) => {
+	.get("/oauth/code", (async (request: OAuthAuthenticationRequest, response) => {
 		const { code } = request.query;
 		
 		if(code) {
@@ -24,7 +25,7 @@ export const authRouter = Router()
 					client_id: config.CLIENT_ID,
 					client_secret: config.CLIENT_SECRET,
 					grant_type: "authorization_code",
-					redirect_uri: "https://localhost:8443/api/auth/discord/oauth",
+					redirect_uri: "https://localhost:8443/api/auth/oauth/code",
 					code: code
 				}).toString()
 			});
@@ -34,4 +35,17 @@ export const authRouter = Router()
 		} else {
 			return response.status(401).json({});
 		}
-	}) as OAuthAuthenticationRequestHandler);
+	}) as OAuthAuthenticationRequestHandler)
+	.get("/oauth/link", (request, response) => {
+		const OAuth2URL = new URL("https://discord.com/oauth2/authorize");
+		
+		OAuth2URL.searchParams.append("response_type", "code");
+		OAuth2URL.searchParams.append("client_id", config.CLIENT_ID);
+		OAuth2URL.searchParams.append("state", randomBytes(32).toString("hex"));
+		OAuth2URL.searchParams.append("scope", config.CLIENT_SCOPES.map(scope => OAuth2Scopes[scope]).join(" "));
+		OAuth2URL.searchParams.append("redirect_uri", "https://localhost:8443/api/auth/oauth/code");
+
+		return response.status(200).json({
+			url: OAuth2URL.toString()
+		});
+	});

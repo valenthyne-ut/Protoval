@@ -4,7 +4,7 @@
  * appropriate runtime type.
 */
 
-import { GatewayIntentBits, GatewayIntentsString } from "discord.js";
+import { GatewayIntentBits, GatewayIntentsString, OAuth2Scopes } from "discord.js";
 import { logger } from "../classes/Logger";
 import { yellow } from "chalk";
 import { ServerOptions } from "https";
@@ -58,9 +58,33 @@ function getClientSecret(): string {
 	if(clientSecret) { return clientSecret; }
 	else { die("Client secret was not provided."); }
 }
+
+function getClientScopes(): Array<keyof typeof OAuth2Scopes> {
+	const clientScopesRaw = process.env.CLIENT_SCOPES;
+	if(clientScopesRaw) {
+		let anyInvalidScopes = false;
+		
+		const validScopes = Object.keys(OAuth2Scopes);
+		const userScopes = clientScopesRaw.split(", ");
+
+		for(const scope of userScopes) {
+			if(validScopes.indexOf(scope) === -1) { 
+				logger.error(`Invalid scope ${yellow(scope)}.`); 
+				anyInvalidScopes = true;
+			}
+		}
+
+		if(anyInvalidScopes) { die("One or more invalid scopes were provided."); }
+		else { return userScopes as Array<keyof typeof OAuth2Scopes>; }
+	} else {
+		die("Client scopes were not provided.");
+	}
+}
+
 //#endregion
 
 // #region Server getters
+
 function getServerPort(): number {
 	let serverPort = 8443;
 	if(process.env.SERVER_PORT !== undefined) {
@@ -87,6 +111,7 @@ function getServerCredentials(): ServerOptions {
 
 	return credentials;
 }
+
 // #endregion
 
 export default {
@@ -94,6 +119,7 @@ export default {
 	CLIENT_INTENTS: getClientIntents(),
 	CLIENT_ID: getClientId(),
 	CLIENT_SECRET: getClientSecret(),
+	CLIENT_SCOPES: getClientScopes(),
 	SERVER_PORT: getServerPort(),
 	SERVER_SSL_CREDENTIALS: getServerCredentials()
 };
