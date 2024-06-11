@@ -17,7 +17,7 @@ export function setupViewEngine(app: Express) {
 
 		app.engine("html", renderFile);
 		app.set("view engine", "html");
-		app.set("view", htdocsPath);
+		app.set("views", htdocsPath);
 
 		app
 			.get(["/"], (request, response) => {

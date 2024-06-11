@@ -4809,6 +4809,7 @@ __metadata:
   resolution: "protoval@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.4.0"
+    "@types/node": "npm:^20.14.2"
     eslint: "npm:9.x"
     eslint-plugin-vue: "npm:^9.26.0"
     execa: "npm:^9.2.0"

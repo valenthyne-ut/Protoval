@@ -1,12 +1,17 @@
 {
 	"name": "protoval",
 	"packageManager": "yarn@4.2.2",
+	"scripts": {
+		"build": "node scripts/build.mjs --app-directory=workspaces/app --dashboard-directory=workspaces/dashboard",
+		"start": "cd build && node index.js"
+	},
 	"workspaces": [
 		"workspaces/app",
 		"workspaces/dashboard"
 	],
 	"devDependencies": {
 		"@eslint/js": "^9.4.0",
+		"@types/node": "^20.14.2",
 		"eslint": "9.x",
 		"eslint-plugin-vue": "^9.26.0",
 		"execa": "^9.2.0",

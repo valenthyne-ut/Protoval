@@ -46,7 +46,7 @@ export default tslint.config(
 		}
 	},
 	{
-		files: [ "workspaces/dashboard/src/**/*.ts" ],
+		files: [ "workspaces/dashboard/src/**/*.ts", "**/*.js", "**/*.mjs" ],
 		...tslint.configs.disableTypeChecked	
 	},
 	{
