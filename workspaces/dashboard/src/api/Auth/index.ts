@@ -12,4 +12,17 @@ export class AuthAPI extends GenericAPI {
 	async getOAuthURL() {
 		return await this.call(this.rootPath + "/oauth/link", HTTPMethods.GET) as GetOAuthLinkResponse;
 	}
+
+	async getAuthStatus() {
+		let authenticated = false;
+		
+		try {
+			await this.call(this.rootPath, HTTPMethods.GET);
+			authenticated = true;
+		} catch(_) {
+			authenticated = false;
+		}
+
+		return authenticated;
+	}
 }

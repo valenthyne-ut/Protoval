@@ -1,7 +1,7 @@
-<script setup lang="ts">
-	import OAuthLoginCard from "@/components/OAuthLoginCard.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-	<OAuthLoginCard />
+	Hello world!
 </template>
+
+<style scoped lang="scss"></style>
