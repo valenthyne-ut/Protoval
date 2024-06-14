@@ -9,6 +9,7 @@ declare global {
 			CLIENT_SECRET: string | undefined;
 			CLIENT_SCOPES: string | undefined;
 			SERVER_PORT: string | undefined;
+			SERVER_COOKIE_SECRET: string | undefined;
 		}
 	}
 }

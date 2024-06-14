@@ -11,6 +11,7 @@ import { ServerOptions } from "https";
 import { unrollError } from "../utility/Errors";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { randomBytes } from "crypto";
 
 function die(reason: string): never {
 	logger.fatal(reason);
@@ -112,6 +113,10 @@ function getServerCredentials(): ServerOptions {
 	return credentials;
 }
 
+function getServerCookieSecret(): string {
+	return process.env.SERVER_COOKIE_SECRET || randomBytes(64).toString("hex");
+}
+
 // #endregion
 
 export default {
@@ -121,5 +126,6 @@ export default {
 	CLIENT_SECRET: getClientSecret(),
 	CLIENT_SCOPES: getClientScopes(),
 	SERVER_PORT: getServerPort(),
-	SERVER_SSL_CREDENTIALS: getServerCredentials()
+	SERVER_SSL_CREDENTIALS: getServerCredentials(),
+	SERVER_COOKIE_SECRET: getServerCookieSecret(),
 };
