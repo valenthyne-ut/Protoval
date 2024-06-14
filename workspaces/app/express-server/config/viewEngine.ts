@@ -27,7 +27,7 @@ export function setupViewEngine(app: Express) {
 				return response.redirect("/");
 			});
 	} else {
-		logger.warning("Express server is staring in API-only mode.");
+		logger.warning("Express server is starting in API-only mode.");
 
 		app.get("*", (request, response) => {
 			return response.send("<p>This Protoval instance is running in API-only mode.</p>");
