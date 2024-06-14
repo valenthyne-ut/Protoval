@@ -16,9 +16,15 @@
 	section.oauth-login-card {
 		display: flex;
 		flex-direction: column;
-		width: calc(100% / 10) * 2;
 		border-radius: 8px;
 		background-color: #27272a;
+
+		@media screen and (min-width: 0px) { width: calc(100% / 10) * 7 }
+		@media screen and (min-width: 640px) { width: calc(100% / 10) * 6 }
+		@media screen and (min-width: 768px) { width: calc(100% / 10) * 5 }
+		@media screen and (min-width: 1024px) { width: calc(100% / 10) * 4 }
+		@media screen and (min-width: 1280px) { width: calc(100% / 10) * 3 }
+		@media screen and (min-width: 1536px) { width: calc(100% / 10) * 2 }
 	}
 
 	.card-header {
