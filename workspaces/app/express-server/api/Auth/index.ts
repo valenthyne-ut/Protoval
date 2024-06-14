@@ -9,6 +9,13 @@ import { OAuthCodeRequest } from "../../database/models/OAuthCodeRequest";
 import { OAuthAuthenticationRequest } from "../../types/APIRequests/Auth";
 
 export const authRouter = Router()
+	.get("/", (request, response) => {
+		if(request.session.authenticated) {
+			response.status(200).json({});
+		} else {
+			response.status(401).json({});
+		}
+	})
 	.get("/oauth/code", (request: OAuthAuthenticationRequest, response) => {
 		void (async () => {
 			const { code, state } = request.query;
