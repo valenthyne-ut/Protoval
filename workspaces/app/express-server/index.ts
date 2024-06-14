@@ -9,11 +9,14 @@ import config from "../shared/config";
 import { unrollError } from "../shared/utility/Errors";
 import { apiRouter } from "./api";
 import { setupViewEngine } from "./config/viewEngine";
-import { prepareDatabase } from "./database";
+import { database } from "./database";
+import { initModels } from "./database/models";
 
 export async function setupServer(): Promise<Express | false> {
 	try {
-		await prepareDatabase();
+		initModels(database);
+		await database.sync();
+
 		const app = express();
 		
 		app.use(cors({
