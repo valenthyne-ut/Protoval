@@ -1,4 +1,6 @@
-export interface OAuthAuthenticationRequest extends Request<> {
+import { Request } from "express";
+
+export type OAuthAuthenticationRequest = Request & {
 	cookies: {
 		userOAuthNonce: string | undefined;
 	},
