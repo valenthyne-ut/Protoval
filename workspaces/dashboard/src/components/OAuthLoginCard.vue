@@ -1,0 +1,63 @@
+<script setup lang="ts"></script>
+
+<template>
+	<section class="oauth-login-card">
+		<span class="card-header">
+			<h1>Login through Discord</h1>
+			<h2>Authorize yourself through Discord to access this Protoval instance's dashboard.</h2>
+		</span>
+		<span class="card-body">
+			<button type="button">...</button>
+		</span>
+	</section>
+</template>
+
+<style scoped lang="scss">
+	section.oauth-login-card {
+		display: flex;
+		flex-direction: column;
+		width: calc(100% / 10) * 2;
+		border-radius: 8px;
+		background-color: #27272a;
+	}
+
+	.card-header {
+		padding: 1.5em;
+		font-weight: bold;
+		background-color: #4f46e5;
+		border-radius: 8px 8px 0px 0px;
+	}
+
+	.card-header h1 {
+		font-size: large;
+	}
+
+	.card-header h2 {
+		padding-top: 0.5em;
+		text-align: justify;
+		font-size: small;
+		color: #ffffffcc;
+	}
+
+	.card-body {
+		display: flex;
+		justify-content: center;
+		padding: 2em;
+	}
+
+	.card-body button {
+		width: 100%;
+		padding: 0.5em 2em;
+		border-radius: 4px;
+		background-color: #3f3f46;
+		transition: background-color 150ms;
+	}
+
+	.card-body button:hover {
+		background-color: #4f46e5;
+	}
+
+	.card-body button:active {
+		background-color: #4338ca;
+	}
+</style>
