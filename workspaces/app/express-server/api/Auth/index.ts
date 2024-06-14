@@ -50,7 +50,8 @@ export const authRouter = Router()
 				});
 
 				if(OAuthResponse.ok) {
-					console.log(await OAuthResponse.json());					
+					console.log(await OAuthResponse.json());
+					request.session.authenticated = true;
 					return response
 						.clearCookie("userOAuthNonce")
 						.redirect("/");
