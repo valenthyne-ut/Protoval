@@ -51,7 +51,7 @@ export const authRouter = Router()
 
 				if(OAuthResponse.ok) {
 					console.log(await OAuthResponse.json());
-					return response.redirect("/");
+					return response.clearCookie("userOAuthNonce").redirect("/");
 				} else {
 					throw new Error(await OAuthResponse.text());
 				}
