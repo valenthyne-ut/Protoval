@@ -1,34 +1,26 @@
 <script setup lang="ts">
-	import { computed, onMounted, ref } from "vue";
-	import { AuthAPI } from "../api/Auth";
+	import { AuthAPI } from "@/api/Auth";
+	import { onMounted, ref } from "vue";
+	import vSpinner from "./vSpinner.vue";
 
-	const authAPI = new AuthAPI();
+	const authAPI = new AuthAPI(); 
 
-	const successful = ref<boolean>(false);
-	const authURL = ref<string | undefined>();
+	const url = ref<string | undefined>();
+	const errorOccurred = ref<boolean>(false);
 
 	onMounted(async () => {
 		try {
 			const response = await authAPI.getOAuthURL();
-			successful.value = true;
-			authURL.value = response.url;
+			url.value = response.url;
 		} catch(error) {
-			successful.value = false;
+			errorOccurred.value = true;
 			console.log(error);
 		}
 	});
 
-	const computedButtonText = computed(() => {
-		if(successful.value && typeof authURL.value !== "undefined") {
-			return "Login";
-		} else {
-			return "...";
-		}
-	});
-
-	function redirectToAuthLink() {
-		if(successful.value && typeof authURL.value !== "undefined") {
-			window.location.replace(authURL.value);
+	function redirect() {
+		if(url.value) {
+			window.location.replace(url.value);
 		}
 	}
 </script>
@@ -41,9 +33,14 @@
 		</span>
 		<span class="card-body">
 			<button
-				type="button"
-				@click.prevent="redirectToAuthLink"
-			>{{ computedButtonText }}</button>
+				v-if="url"
+				@click.prevent="redirect"
+			>Authorize</button>
+			<span
+				v-else-if="errorOccurred"
+				class="error"
+			>An error occurred while getting you an authorization link. Please, refresh the page.</span>
+			<vSpinner v-else />
 		</span>
 	</section>
 </template>
@@ -85,6 +82,13 @@
 		display: flex;
 		justify-content: center;
 		padding: 2em;
+	}
+
+	.card-body .error {
+		text-align: justify;
+		font-size: small;
+		font-weight: bold;
+		color: #dc2626;
 	}
 
 	.card-body button {
