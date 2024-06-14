@@ -18,13 +18,13 @@ export interface APIErrorResponse {
 
 export abstract class GenericAPI {
 	rootPath: string;
-	static API_DEFAULT_ROOT_PATH: string = "/api";
+	static DEFAULT_ROOT_PATH: string = "/api";
 
 	constructor(rootPath: string) {
 		this.rootPath = rootPath;
 	}
 
-	protected async performCall(path: string, method: HTTPMethods, params?: APICallOptionalParams): Promise<unknown> {
+	protected async call(path: string, method: HTTPMethods, params?: APICallOptionalParams): Promise<unknown> {
 		const requestOptions: RequestInit = {
 			method: method,
 			headers: params?.headers || {

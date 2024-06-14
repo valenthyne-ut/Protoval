@@ -1,4 +1,37 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+	import { computed, onMounted, ref } from "vue";
+	import { AuthAPI } from "../api/Auth";
+
+	const authAPI = new AuthAPI();
+
+	const successful = ref<boolean>(false);
+	const authURL = ref<string | undefined>();
+
+	onMounted(async () => {
+		try {
+			const response = await authAPI.getOAuthURL();
+			successful.value = true;
+			authURL.value = response.url;
+		} catch(error) {
+			successful.value = false;
+			console.log(error);
+		}
+	});
+
+	const computedButtonText = computed(() => {
+		if(successful.value && typeof authURL.value !== "undefined") {
+			return "Login";
+		} else {
+			return "...";
+		}
+	});
+
+	function redirectToAuthLink() {
+		if(successful.value && typeof authURL.value !== "undefined") {
+			window.location.replace(authURL.value);
+		}
+	}
+</script>
 
 <template>
 	<section class="oauth-login-card">
@@ -7,7 +40,10 @@
 			<h2>Authorize yourself through Discord to access this Protoval instance's dashboard.</h2>
 		</span>
 		<span class="card-body">
-			<button type="button">...</button>
+			<button
+				type="button"
+				@click.prevent="redirectToAuthLink"
+			>{{ computedButtonText }}</button>
 		</span>
 	</section>
 </template>
