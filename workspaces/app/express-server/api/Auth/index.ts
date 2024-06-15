@@ -16,7 +16,7 @@ export const authRouter = Router()
 			response.status(401).json({});
 		}
 	})
-	.get("/oauth/code", (request: OAuthAuthenticationRequest, response) => {
+	.get("/code", (request: OAuthAuthenticationRequest, response) => {
 		void (async () => {
 			const { code, state } = request.query;
 			const userCookieNonce = request.cookies.userOAuthNonce;
@@ -51,7 +51,7 @@ export const authRouter = Router()
 						client_id: config.CLIENT_ID,
 						client_secret: config.CLIENT_SECRET,
 						grant_type: "authorization_code",
-						redirect_uri: "https://localhost:8443/api/auth/oauth/code",
+						redirect_uri: "https://localhost:8443/api/auth/code",
 						code: code
 					}).toString()
 				});
@@ -73,7 +73,7 @@ export const authRouter = Router()
 			}
 		})();
 	})
-	.get("/oauth/link", (request, response) => {		
+	.get("/link", (request, response) => {		
 		void (async () => {
 			const stateNonce = randomBytes(32).toString("hex");
 			const userCookieNonce = randomBytes(32).toString("hex");
@@ -98,7 +98,7 @@ export const authRouter = Router()
 			OAuth2URL.searchParams.append("client_id", config.CLIENT_ID);
 			OAuth2URL.searchParams.append("state", stateNonce);
 			OAuth2URL.searchParams.append("scope", config.CLIENT_SCOPES.map(scope => OAuth2Scopes[scope]).join(" "));
-			OAuth2URL.searchParams.append("redirect_uri", "https://localhost:8443/api/auth/oauth/code");
+			OAuth2URL.searchParams.append("redirect_uri", "https://localhost:8443/api/auth/code");
 
 			response
 				.status(200)
