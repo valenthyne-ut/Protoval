@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-export type OAuthAuthenticationRequest = Request & {
+export type OAuthUserRequest = Request & {
 	cookies: {
 		userOAuthNonce: string | undefined;
 	},
@@ -8,4 +8,12 @@ export type OAuthAuthenticationRequest = Request & {
 		code: string | undefined;
 		state: string | undefined;
 	}
+}
+
+export type OAuthDiscordAPIResponse = {
+	access_token: string;
+	token_type: "Bearer";
+	expires_in: number;
+	refresh_token: string;
+	scope: string;
 }

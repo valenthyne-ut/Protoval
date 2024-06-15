@@ -6,7 +6,7 @@ import { logger } from "../../../shared/classes/Logger";
 import config from "../../../shared/config";
 import { unrollError } from "../../../shared/utility/Errors";
 import { OAuthCodeRequest } from "../../database/models/OAuthCodeRequest";
-import { OAuthAuthenticationRequest } from "../../types/APIRequests/Auth";
+import { OAuthUserRequest, OAuthDiscordAPIResponse } from "../../types/APIRequests/Auth";
 
 export const authRouter = Router()
 	.get("/", (request, response) => {
@@ -16,7 +16,7 @@ export const authRouter = Router()
 			response.status(401).json({});
 		}
 	})
-	.get("/code", (request: OAuthAuthenticationRequest, response) => {
+	.get("/code", (request: OAuthUserRequest, response) => {
 		void (async () => {
 			const { code, state } = request.query;
 			const userCookieNonce = request.cookies.userOAuthNonce;
@@ -57,8 +57,12 @@ export const authRouter = Router()
 				});
 
 				if(OAuthResponse.ok) {
-					console.log(await OAuthResponse.json());
+					const responseJSON = await OAuthResponse.json() as OAuthDiscordAPIResponse;
+					
 					request.session.authenticated = true;
+					request.session.accessToken = responseJSON.access_token;
+					request.session.refreshToken = responseJSON.refresh_token;
+
 					return response
 						.clearCookie("userOAuthNonce")
 						.redirect("/");

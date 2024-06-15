@@ -16,7 +16,8 @@ export function setupSessionMiddleware(app: Express, database: Sequelize) {
 		cookie: {
 			secure: true,
 			httpOnly: true,
-			sameSite: "strict"
+			sameSite: "strict",
+			maxAge: new Date().getTime() + (60 * 60 * 24 * 7 * 1000)
 		}
 	}));
 }
