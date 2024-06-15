@@ -1,4 +1,4 @@
-import { cpSync, existsSync, readFileSync, rmSync, writeFileSync } from "fs";
+import { appendFileSync, cpSync, existsSync, readFileSync, rmSync, writeFileSync } from "fs";
 import * as init from "./init.mjs";
 import { $ as _ } from "execa";
 
@@ -23,7 +23,10 @@ void (async () => {
 		if(!init.SKIP_CREDENTIALS) { cpSync(init.APP_CREDENTIALS_DIR, init.BUILD_CREDENTIALS_DIR, { recursive: true });	} 
 		else { console.log("Skipping SSL credentials."); }
 
-		if(!init.SKIP_ENV_FILE) { cpSync(init.APP_ENV_FILE, init.BUILD_ENV_FILE); }
+		if(!init.SKIP_ENV_FILE) { 
+			cpSync(init.APP_ENV_FILE, init.BUILD_ENV_FILE); 
+			appendFileSync(init.BUILD_ENV_FILE, "ENVIRONMENT=production", { encoding: "utf-8" });
+		}
 		else { console.log("Skipping .env file."); }
 
 		cpSync(init.DASHBOARD_DIST_DIR, init.BUILD_HTDOCS_DIR, { recursive: true });

@@ -65,7 +65,9 @@ export const authRouter = Router()
 
 					return response
 						.clearCookie("userOAuthNonce")
-						.redirect("/");
+						.redirect(config.ENVIRONMENT === "production" ? 
+							"/" : 
+							"http://localhost:5173");
 				} else {
 					throw new Error(await OAuthResponse.text());
 				}

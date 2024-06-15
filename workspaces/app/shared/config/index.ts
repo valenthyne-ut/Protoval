@@ -18,6 +18,15 @@ function die(reason: string): never {
 	process.exit(1);
 }
 
+function getEnvironment(): "development" | "production" {
+	const environment = process.env.ENVIRONMENT;
+	if(environment && environment.toLowerCase() == "production") { return "production"; } 
+	else { 
+		logger.warning("In a development environment!");
+		return "development"; 
+	}
+}
+
 // #region Client getters
 
 function getClientToken(): string { 
@@ -120,6 +129,7 @@ function getServerCookieSecret(): string {
 // #endregion
 
 export default {
+	ENVIRONMENT: getEnvironment(),
 	CLIENT_TOKEN: getClientToken(),
 	CLIENT_INTENTS: getClientIntents(),
 	CLIENT_ID: getClientId(),
