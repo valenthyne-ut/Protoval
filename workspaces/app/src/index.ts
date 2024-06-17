@@ -10,6 +10,7 @@ import { startHTTPSServer } from "./config/HTTPSServer";
 import { cyan } from "chalk";
 import { useViewEngine } from "./config/ViewEngine";
 import cookieParser from "cookie-parser";
+import { apiRouter } from "./api";
 
 const logger = new Logger("Server");
 
@@ -24,6 +25,9 @@ void (async () => {
 		// Parser middleware
 		app.use(express.json());
 		app.use(cookieParser(config.SERVER_COOKIE_SECRET));
+
+		// API middleware
+		app.use("/api", apiRouter);
 
 		// View engine
 		useViewEngine(app);
