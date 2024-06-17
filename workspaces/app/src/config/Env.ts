@@ -55,6 +55,10 @@ function getServerCookieSecret(): string {
 	return process.env.SERVER_COOKIE_SECRET || randomBytes(64).toString("hex");
 }
 
+function getServerName(): string {
+	return process.env.SERVER_NAME || "localhost";
+}
+
 // #endregion
 
 // #region Client variables
@@ -94,6 +98,7 @@ export default {
 	SERVER_PORT: getServerPort(),
 	SERVER_CREDENTIALS: getServerCredentials(),
 	SERVER_COOKIE_SECRET: getServerCookieSecret(),
+	SERVER_NAME: getServerName(),
 
 	CLIENT_TOKEN: getClientToken(),
 	CLIENT_INTENTS: getClientIntents()

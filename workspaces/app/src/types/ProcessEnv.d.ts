@@ -7,6 +7,7 @@ declare global {
 
 			SERVER_PORT: string | undefined;
 			SERVER_COOKIE_SECRET: string | undefined;
+			SERVER_NAME: string | undefined;
 
 			CLIENT_TOKEN: string | undefined;
 			CLIENT_INTENTS: string | undefined;
