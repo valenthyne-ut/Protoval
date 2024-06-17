@@ -15,8 +15,10 @@
 node_modules
 **/dist
 **/.env
-**/ssl-credentials
+**/ssl
 *.pem
 protoval.sqlite
 *.sqlite
 build
+
+oldsrc
