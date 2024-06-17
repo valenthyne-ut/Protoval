@@ -121,6 +121,10 @@ function getClientRedirectURI(): string {
 	return process.env.CLIENT_REDIRECT_URI || die("A client redirect URI wasn't provided.");
 }
 
+function getClientSecret(): string {
+	return process.env.CLIENT_SECRET || die("Client secret wasn't provided.");
+}
+
 // #endregion
 
 export default {
@@ -136,4 +140,5 @@ export default {
 	CLIENT_ID: getClientId(),
 	CLIENT_SCOPES: getClientScopes(),
 	CLIENT_REDIRECT_URI: getClientRedirectURI(),
+	CLIENT_SECRET: getClientSecret(),
 };

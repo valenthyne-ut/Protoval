@@ -14,6 +14,7 @@ declare global {
 			CLIENT_ID: string | undefined;
 			CLIENT_SCOPES: string | undefined;
 			CLIENT_REDIRECT_URI: string | undefined;
+			CLIENT_SECRET: string | undefined;
 		}
 	}
 }
