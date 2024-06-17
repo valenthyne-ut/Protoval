@@ -5,6 +5,7 @@ import { Logger } from "../classes/Logger";
 import { unrollError } from "../util/Errors";
 import { GatewayIntentBits, GatewayIntentsString } from "discord.js";
 import { yellow } from "chalk";
+import { randomBytes } from "crypto";
 
 const logger = new Logger("init");
 
@@ -43,6 +44,10 @@ function getServerCredentials(): ServerOptions {
 	return credentials;
 }
 
+function getServerCookieSecret(): string {
+	return process.env.SERVER_COOKIE_SECRET || randomBytes(64).toString("hex");
+}
+
 // #endregion
 
 // #region Client variables
@@ -79,6 +84,7 @@ function getClientIntents(): Array<GatewayIntentsString> {
 export default {
 	SERVER_PORT: getServerPort(),
 	SERVER_CREDENTIALS: getServerCredentials(),
+	SERVER_COOKIE_SECRET: getServerCookieSecret(),
 
 	CLIENT_TOKEN: getClientToken(),
 	CLIENT_INTENTS: getClientIntents()

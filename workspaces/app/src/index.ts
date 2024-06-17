@@ -9,6 +9,7 @@ import { client } from "./client";
 import { startHTTPSServer } from "./config/HTTPSServer";
 import { cyan } from "chalk";
 import { useViewEngine } from "./config/ViewEngine";
+import cookieParser from "cookie-parser";
 
 const logger = new Logger("Server");
 
@@ -19,6 +20,10 @@ void (async () => {
 		// Global middleware
 		app.use(helmet());
 		useCORS(app, config.SERVER_PORT);
+
+		// Parser middleware
+		app.use(express.json());
+		app.use(cookieParser(config.SERVER_COOKIE_SECRET));
 
 		// View engine
 		useViewEngine(app);
