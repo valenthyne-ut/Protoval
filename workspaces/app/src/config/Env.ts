@@ -6,12 +6,19 @@ import { unrollError } from "../util/Errors";
 import { GatewayIntentBits, GatewayIntentsString } from "discord.js";
 import { yellow } from "chalk";
 import { randomBytes } from "crypto";
+import { Environment } from "../types/Environment";
 
 const logger = new Logger("init");
 
 function die(reason: string): never {
 	logger.fatal(reason);
 	process.exit(1);
+}
+
+function getEnvironment(): Environment {
+	const environment = process.env.ENVIRONMENT;
+	if(environment && environment.toLowerCase() === "production") { return "production"; }
+	else { logger.info("Starting in a development environment."); return "development"; }
 }
 
 // #region Server variables
@@ -82,6 +89,8 @@ function getClientIntents(): Array<GatewayIntentsString> {
 // #endregion
 
 export default {
+	ENVIRONMENT: getEnvironment(),
+
 	SERVER_PORT: getServerPort(),
 	SERVER_CREDENTIALS: getServerCredentials(),
 	SERVER_COOKIE_SECRET: getServerCookieSecret(),
