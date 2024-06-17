@@ -34,7 +34,6 @@ void (async () => {
 
 		// All done! Now we need to start up the discord 
 		// client and start serving when it's ready.
-		await client.login(config.CLIENT_TOKEN);
 		client.once("ready", () => {
 			startHTTPSServer(app, config.SERVER_PORT, config.SERVER_CREDENTIALS)
 				.once("listening", () => {
@@ -42,6 +41,8 @@ void (async () => {
 					logger.info(`Local: ${cyan(`https://localhost:${config.SERVER_PORT}`)}`);
 				});
 		});
+
+		await client.login(config.CLIENT_TOKEN);
 	} catch(error) {
 		logger.fatal(unrollError(error, true));
 	}
