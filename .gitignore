@@ -20,5 +20,3 @@ node_modules
 protoval.sqlite
 *.sqlite
 build
-
-oldsrc
