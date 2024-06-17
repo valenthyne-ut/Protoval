@@ -8,6 +8,7 @@ import { unrollError } from "./util/Errors";
 import { client } from "./client";
 import { startHTTPSServer } from "./config/HTTPSServer";
 import { cyan } from "chalk";
+import { useViewEngine } from "./config/ViewEngine";
 
 const logger = new Logger("Server");
 
@@ -18,6 +19,9 @@ void (async () => {
 		// Global middleware
 		app.use(helmet());
 		useCORS(app, config.SERVER_PORT);
+
+		// View engine
+		useViewEngine(app);
 
 		// All done! Now we need to start up the discord 
 		// client and start serving when it's ready.
