@@ -11,6 +11,9 @@ declare global {
 
 			CLIENT_TOKEN: string | undefined;
 			CLIENT_INTENTS: string | undefined;
+			CLIENT_ID: string | undefined;
+			CLIENT_SCOPES: string | undefined;
+			CLIENT_REDIRECT_URI: string | undefined;
 		}
 	}
 }

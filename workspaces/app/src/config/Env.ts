@@ -3,7 +3,7 @@ import { ServerOptions } from "https";
 import { join } from "path";
 import { Logger } from "../classes/Logger";
 import { unrollError } from "../util/Errors";
-import { GatewayIntentBits, GatewayIntentsString } from "discord.js";
+import { GatewayIntentBits, GatewayIntentsString, OAuth2Scopes } from "discord.js";
 import { yellow } from "chalk";
 import { randomBytes } from "crypto";
 import { Environment } from "../types/Environment";
@@ -90,6 +90,37 @@ function getClientIntents(): Array<GatewayIntentsString> {
 	}
 }
 
+function getClientId(): string {
+	return process.env.CLIENT_ID || die("Client ID wasn't provided.");
+}
+
+function getClientScopes(): Array<keyof typeof OAuth2Scopes> {
+	const rawClientScopes = process.env.CLIENT_SCOPES;
+
+	if(rawClientScopes) {
+		let anyInvalidScopes = false;
+		
+		const validScopes = Object.keys(OAuth2Scopes);
+		const userScopes = rawClientScopes.split(", ");
+
+		for(const scope of userScopes) {
+			if(validScopes.indexOf(scope) === -1) { 
+				logger.error(`Invalid scope ${yellow(scope)}.`); 
+				anyInvalidScopes = true;
+			}
+		}
+
+		if(anyInvalidScopes) { die("One or more invalid scopes were provided."); }
+		else { return userScopes as Array<keyof typeof OAuth2Scopes>; }
+	} else {
+		die("Client scopes were not provided.");
+	}
+}
+
+function getClientRedirectURI(): string {
+	return process.env.CLIENT_REDIRECT_URI || die("A client redirect URI wasn't provided.");
+}
+
 // #endregion
 
 export default {
@@ -101,5 +132,8 @@ export default {
 	SERVER_NAME: getServerName(),
 
 	CLIENT_TOKEN: getClientToken(),
-	CLIENT_INTENTS: getClientIntents()
+	CLIENT_INTENTS: getClientIntents(),
+	CLIENT_ID: getClientId(),
+	CLIENT_SCOPES: getClientScopes(),
+	CLIENT_REDIRECT_URI: getClientRedirectURI(),
 };
