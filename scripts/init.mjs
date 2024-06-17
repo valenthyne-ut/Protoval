@@ -52,7 +52,7 @@ export const DASHBOARD_DIST_DIR = join(DASHBOARD_ROOT_DIR, "/dist");
 
 export const APP_ROOT_DIR 			= getArgumentValue(appDirectoryArgument);
 export const APP_DIST_DIR 			= join(APP_ROOT_DIR, "/dist");
-export const APP_CREDENTIALS_DIR 	= join(APP_ROOT_DIR, "/ssl-credentials");
+export const APP_CREDENTIALS_DIR 	= join(APP_ROOT_DIR, "/ssl");
 export const APP_ENV_FILE 			= join(APP_ROOT_DIR, "/.env");
 export const APP_PACKAGE_FILE 		= join(APP_ROOT_DIR, "/package.json");
 
@@ -60,7 +60,7 @@ export const BUILD_ROOT_DIR			= typeof buildDirectoryArgument !== "undefined"?
 	getArgumentValue(buildDirectoryArgument) :
 	preparePath("build");
 
-export const BUILD_CREDENTIALS_DIR 	= join(BUILD_ROOT_DIR, "/ssl-credentials");
+export const BUILD_CREDENTIALS_DIR 	= join(BUILD_ROOT_DIR, "/ssl");
 export const BUILD_HTDOCS_DIR 		= join(BUILD_ROOT_DIR, "/htdocs");
 export const BUILD_YARNLOCK_FILE 	= join(BUILD_ROOT_DIR, "/yarn.lock");
 export const BUILD_YARNRC_FILE	 	= join(BUILD_ROOT_DIR, "/yarnrc.yml");
