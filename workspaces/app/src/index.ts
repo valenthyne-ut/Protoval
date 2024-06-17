@@ -23,7 +23,7 @@ void (async () => {
 
 		// Global middleware
 		app.use(helmet());
-		useCORS(app, config.SERVER_PORT);
+		useCORS(app, config.SERVER_PORT, config.SERVER_NAME, config.ENVIRONMENT);
 
 		// Parser middleware
 		app.use(express.json());
@@ -49,6 +49,10 @@ void (async () => {
 				.once("listening", () => {
 					logger.info("Server started successfully.");
 					logger.info(`Local: ${cyan(`https://localhost:${config.SERVER_PORT}`)}`);
+					
+					if(config.ENVIRONMENT === "production") {
+						logger.info(`Public: ${cyan(`https://${config.SERVER_NAME}:${config.SERVER_PORT}`)}`);
+					}
 				});
 		});
 
